@@ -81,6 +81,21 @@ ${resumeText}`;
       );
     }
 
+    // Handle missing API key
+    if (
+      error.message &&
+      (error.message.includes("API_KEY_INVALID") ||
+        error.message.includes("API key not valid"))
+    ) {
+      return NextResponse.json(
+        {
+          error:
+            "Gemini API key is invalid or not configured. Please check your environment variables.",
+        },
+        { status: 500 }
+      );
+    }
+
     // Handle rate limiting / quota errors
     if (
       error.message &&
@@ -98,7 +113,7 @@ ${resumeText}`;
     }
 
     return NextResponse.json(
-      { error: "Failed to analyze resume. Please try again later." },
+      { error: `Failed to analyze resume: ${error.message || "Unknown error"}` },
       { status: 500 }
     );
   }
