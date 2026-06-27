@@ -34,7 +34,7 @@ async function callGeminiWithRetry(prompt) {
 
 export async function POST(request) {
   try {
-    const { resumeText } = await request.json();
+    const { resumeText, jobDescription } = await request.json();
 
     if (!resumeText || resumeText.trim().length === 0) {
       return NextResponse.json(
@@ -43,7 +43,26 @@ export async function POST(request) {
       );
     }
 
-    const prompt = `You are an expert ATS resume analyzer. Analyze the resume below and return ONLY a valid JSON object with no markdown, no explanation, just raw JSON with these fields:
+    const hasJd = !!(jobDescription && jobDescription.trim().length > 0);
+
+    let prompt = "";
+    if (hasJd) {
+      prompt = `You are an expert ATS resume analyzer and job matching optimizer.
+Analyze the resume below against the target job description. Calculate how well the resume matches the requirements, and return ONLY a valid JSON object with no markdown, no explanation, just raw JSON with these fields:
+- ats_score: number 0-100 (representing the Job Match Score)
+- strong_skills: array of strings (skills/keywords present in both the resume and target job description)
+- missing_keywords: array of strings (important skills/keywords requested in the job description that are missing or weak in the resume)
+- experience_feedback: string (feedback on how well the candidate's work history, projects, and impact match the job description requirements)
+- suggestions: array of 3-5 strings (specific actionable recommendations to tailor the resume bullet points/sections to align better with the job description)
+- overall_verdict: string (a comprehensive summary of compatibility with the role and readiness for application)
+
+Target Job Description:
+${jobDescription.trim()}
+
+Resume:
+${resumeText}`;
+    } else {
+      prompt = `You are an expert ATS resume analyzer. Analyze the resume below and return ONLY a valid JSON object with no markdown, no explanation, just raw JSON with these fields:
 - ats_score: number 0-100
 - strong_skills: array of strings
 - missing_keywords: array of strings
@@ -53,6 +72,7 @@ export async function POST(request) {
 
 Resume:
 ${resumeText}`;
+    }
 
     const text = await callGeminiWithRetry(prompt);
 
@@ -69,6 +89,7 @@ ${resumeText}`;
     cleanText = cleanText.trim();
 
     const analysis = JSON.parse(cleanText);
+    analysis.hasJd = hasJd;
 
     return NextResponse.json(analysis);
   } catch (error) {

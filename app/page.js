@@ -8,6 +8,7 @@ export default function UploadPage() {
   const [dragOver, setDragOver] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  const [jobDescription, setJobDescription] = useState("");
   const fileInputRef = useRef(null);
   const router = useRouter();
 
@@ -90,7 +91,7 @@ export default function UploadPage() {
       const response = await fetch("/api/analyze", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ resumeText }),
+        body: JSON.stringify({ resumeText, jobDescription }),
       });
 
       if (!response.ok) {
@@ -249,6 +250,22 @@ export default function UploadPage() {
               </button>
             </div>
           )}
+
+          {/* Job Description (JD) Input */}
+          <div className="jd-container">
+            <label className="jd-label" htmlFor="jd-textarea">
+              <span>Target Job Description</span>
+              <span className="jd-optional">Optional</span>
+            </label>
+            <textarea
+              id="jd-textarea"
+              className="jd-textarea"
+              placeholder="Paste the target job description here to get a tailored compatibility score and recommendations..."
+              value={jobDescription}
+              onChange={(e) => setJobDescription(e.target.value)}
+              disabled={loading}
+            />
+          </div>
 
           {/* Error */}
           {error && (

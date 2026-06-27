@@ -430,3 +430,55 @@ body {
   align-items: center;
   gap: 0.625rem;
 }
+
+/* ── Job Description Section ── */
+.jd-container {
+  margin-top: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  text-align: left;
+}
+
+.jd-label {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--foreground);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.jd-optional {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  font-weight: 400;
+}
+
+.jd-textarea {
+  width: 100%;
+  min-height: 120px;
+  max-height: 240px;
+  padding: 0.75rem 1rem;
+  background: rgba(18, 18, 26, 0.4);
+  backdrop-filter: blur(10px);
+  border: 1px solid var(--card-border);
+  border-radius: 0.75rem;
+  color: var(--foreground);
+  font-size: 0.875rem;
+  outline: none;
+  resize: vertical;
+  transition: all 0.3s ease;
+}
+
+.jd-textarea::placeholder {
+  color: var(--text-muted);
+  opacity: 0.7;
+}
+
+.jd-textarea:focus {
+  border-color: var(--accent-primary);
+  box-shadow: 0 0 15px rgba(108, 99, 255, 0.15);
+  background: rgba(18, 18, 26, 0.6);
+}
+

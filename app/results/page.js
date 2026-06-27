@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 
-function ScoreRing({ score }) {
+function ScoreRing({ score, hasJd }) {
   const radius = 70;
   const circumference = 2 * Math.PI * radius;
   const offset = circumference - (score / 100) * circumference;
@@ -53,7 +53,7 @@ function ScoreRing({ score }) {
       </svg>
       <div className="score-label">
         <span className="score-number">{score}</span>
-        <span className="score-subtitle">ATS Score</span>
+        <span className="score-subtitle">{hasJd ? "Match Score" : "ATS Score"}</span>
       </div>
     </div>
   );
@@ -92,6 +92,7 @@ export default function ResultsPage() {
     experience_feedback,
     suggestions,
     overall_verdict,
+    hasJd,
   } = result;
 
   return (
@@ -111,14 +112,16 @@ export default function ResultsPage() {
             </span>
           </h1>
           <p className="text-sm" style={{ color: "var(--text-muted)" }}>
-            Here&apos;s how your resume performs against ATS systems
+            {hasJd
+              ? "Here's how your resume matches the target job description"
+              : "Here's how your resume performs against ATS systems"}
           </p>
         </div>
 
         {/* ── Score ── */}
         <div className="flex justify-center mb-10 fade-in fade-in-delay-1">
           <div className="glass-card p-8 sm:p-10 text-center">
-            <ScoreRing score={ats_score} />
+            <ScoreRing score={ats_score} hasJd={hasJd} />
             <p
               className="mt-4 text-sm font-medium"
               style={{
@@ -131,10 +134,10 @@ export default function ResultsPage() {
               }}
             >
               {ats_score >= 75
-                ? "Great — Your resume is well optimized!"
+                ? hasJd ? "Great — Excellent match for this position!" : "Great — Your resume is well optimized!"
                 : ats_score >= 50
-                ? "Decent — Some improvements recommended"
-                : "Needs work — Significant improvements needed"}
+                ? hasJd ? "Good — Matches most key requirements, but gaps exist" : "Decent — Some improvements recommended"
+                : hasJd ? "Weak — Significant gaps compared to job requirements" : "Needs work — Significant improvements needed"}
             </p>
           </div>
         </div>
@@ -150,7 +153,7 @@ export default function ResultsPage() {
               >
                 ✓
               </div>
-              Strong Skills
+              {hasJd ? "Matched Skills" : "Strong Skills"}
             </div>
             <div className="flex flex-wrap gap-2">
               {strong_skills && strong_skills.length > 0 ? (
@@ -161,7 +164,7 @@ export default function ResultsPage() {
                 ))
               ) : (
                 <p className="text-sm" style={{ color: "var(--text-muted)" }}>
-                  No strong skills detected
+                  {hasJd ? "No matching skills detected" : "No strong skills detected"}
                 </p>
               )}
             </div>
@@ -176,7 +179,7 @@ export default function ResultsPage() {
               >
                 ✗
               </div>
-              Missing Keywords
+              {hasJd ? "Missing JD Keywords" : "Missing Keywords"}
             </div>
             <div className="flex flex-wrap gap-2">
               {missing_keywords && missing_keywords.length > 0 ? (
@@ -187,7 +190,7 @@ export default function ResultsPage() {
                 ))
               ) : (
                 <p className="text-sm" style={{ color: "var(--text-muted)" }}>
-                  No missing keywords — great coverage!
+                  {hasJd ? "All critical JD keywords match! Great coverage!" : "No missing keywords — great coverage!"}
                 </p>
               )}
             </div>
