@@ -6,15 +6,16 @@ An AI-powered web application that analyzes your resume against **Applicant Trac
 
 ## ✨ Features
 
-- **📊 ATS Score (0–100)** — Get a clear numeric score showing how well your resume will perform with ATS systems
-- **✅ Strong Skills Detection** — See which skills in your resume stand out to employers
-- **❌ Missing Keywords** — Discover critical keywords your resume is lacking
-- **💼 Experience Feedback** — Get personalized feedback on how your experience is presented
-- **💡 Actionable Suggestions** — Receive 3–5 specific improvements to boost your score
-- **⚖️ Overall Verdict** — A comprehensive summary of your resume's strengths and weaknesses
-- **🎨 Modern Dark UI** — Sleek glassmorphism design with smooth animations
-- **📱 Fully Responsive** — Works seamlessly on desktop, tablet, and mobile
-- **⚡ Client-Side PDF Parsing** — Your resume is processed in the browser for faster performance
+- **🎯 Job Description Matcher (Optional)** — Paste a target Job Description (JD) to get a custom **Job Match Score** and tailored suggestions specifically synced to the role's requirements.
+- **📊 ATS Score (0–100)** — Get a clear numeric score showing how well your resume performs generally with ATS systems.
+- **✅ Match/Strong Skills Detection** — See which matching skills in your resume stand out to employers or align with the job description.
+- **❌ Missing Keywords** — Discover critical keywords or job requirements your resume is currently lacking.
+- **💼 Experience Feedback** — Get personalized feedback on how well your work history and project impact align with target role expectations.
+- **💡 Actionable Suggestions** — Receive 3–5 specific suggestions to tailor your resume bullet points and layout to boost your match rating.
+- **⚖️ Overall Verdict** — A comprehensive summary of your resume's compatibility and readiness for application.
+- **🎨 Modern Dark UI** — Sleek glassmorphic design with smooth animations.
+- **📱 Fully Responsive** — Works seamlessly on desktop, tablet, and mobile.
+- **⚡ Client-Side PDF Parsing** — Your resume is processed directly in the browser for faster performance and maximum privacy.
 
 ---
 
@@ -103,10 +104,10 @@ ats-analyzer/
 └──────────────┘     └──────────────┘     └──────────────┘     └──────────────┘
 ```
 
-1. **Upload** — Drag & drop or browse to select your resume PDF (max 10 MB)
-2. **Extract** — Text is extracted client-side using pdf.js (no server upload needed)
-3. **Analyze** — Extracted text is sent to the Gemini 1.5 Flash API for ATS analysis
-4. **Results** — Structured JSON response is displayed with an animated score ring, skill badges, and detailed feedback
+1. **Upload & Input** — Drag & drop or browse to select your resume PDF (max 10 MB). Optionally, paste the target Job Description in the provided field.
+2. **Extract** — Text is extracted client-side using pdf.js (no server-side file upload needed).
+3. **Analyze** — Extracted text and optional Job Description are sent to the Gemini API for tailored match and ATS analysis.
+4. **Results** — Structured JSON response is displayed with an animated Match/ATS score ring, matched/missing skill badges, and detailed tailoring feedback.
 
 ---
 
